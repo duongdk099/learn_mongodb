@@ -8,7 +8,7 @@ const accountSchema = new mongoose.Schema({
   customName: {
     type: String,
     required: [true, "Please provide a custom name"],
-    maxlength: 20,
+    maxlength: 50,
   },
   lastUpdated: {
     type: Date,

@@ -5,7 +5,8 @@ const accountLineSchema = new mongoose.Schema({
   label: {
     type: String,
     required: [true, "Please provide a label"],
-    maxlength: 20,
+    minlength: 2,
+    maxlength: 50,
   },
   type: {
     type: String,
