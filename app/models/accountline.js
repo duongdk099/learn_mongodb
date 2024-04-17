@@ -5,12 +5,7 @@ const accountLineSchema = new mongoose.Schema({
   label: {
     type: String,
     required: [true, "Please provide a label"],
-    validate: {
-      validator: (value) => {
-        return value.length > 3;
-      },
-      message: "Label must be at least 3 characters long",
-    },
+    maxlength: 20,
   },
   type: {
     type: String,

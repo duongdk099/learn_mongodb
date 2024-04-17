@@ -8,12 +8,7 @@ const accountSchema = new mongoose.Schema({
   customName: {
     type: String,
     required: [true, "Please provide a custom name"],
-    validate: {
-      validator: (value) => {
-        return value.length > 3;
-      },
-      message: "Custom name must be at least 3 characters long",
-    },
+    maxlength: 20,
   },
   lastUpdated: {
     type: Date,
