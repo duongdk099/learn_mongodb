@@ -1,24 +1,41 @@
+const mongoose = require("mongoose");
+const uniqueValidator = require("mongoose-unique-validator");
+
 const accountLineSchema = new mongoose.Schema({
   label: {
     type: String,
-    required: true,
+    required: [true, "Please provide a label"],
+    validate: {
+      validator: (value) => {
+        return value.length > 3;
+      },
+      message: "Label must be at least 3 characters long",
+    },
   },
   type: {
     type: String,
-    required: true,
-    enum: ["debit", "credit"], 
+    required: [true, "Please provide a type"],
+    enum: {
+      values: ["debit", "credit"],
+      message: "Type must be debit or credit",
+    },
   },
   amount: {
     type: Number,
-    required: true,
+    required: [true, "Please provide an amount"],
   },
   paymentDate: {
     type: Date,
-    required: true,
+    required: [true, "Please provide a payment date"],
   },
   paymentMethod: {
     type: String,
-    required: true,
+    required: [true, "Please provide a payment method"],
+    enum: {
+      values: ["check", "cash", "credit", "deposit", "transfer"],
+      message:
+        "Payment method must be check, cash, credit, deposit or transfer",
+    },
   },
   isChecked: {
     type: Boolean,
@@ -27,13 +44,14 @@ const accountLineSchema = new mongoose.Schema({
   category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Category",
-    required: true,
+    required: [true, "Please provide a category"],
   },
   accountId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Account",
-    required: true,
+    required: [true, "Please provide an account id"],
   },
 });
 
+accountLineSchema.plugin(uniqueValidator);
 const AccountLine = mongoose.model("AccountLine", accountLineSchema);
