@@ -5,8 +5,8 @@ const accountLineSchema = new mongoose.Schema({
   label: {
     type: String,
     required: [true, "Please provide a label"],
-    minlength: 2,
-    maxlength: 50,
+    minlength: [2, "Label must be at least 2 characters long"],
+    maxlength: [50, "Label cannot be longer than 50 characters"],
   },
   type: {
     type: String,

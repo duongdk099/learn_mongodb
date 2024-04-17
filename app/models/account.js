@@ -8,7 +8,7 @@ const accountSchema = new mongoose.Schema({
   customName: {
     type: String,
     required: [true, "Please provide a custom name"],
-    maxlength: 50,
+    maxlength: [50, "Custom name cannot be longer than 50 characters"],
   },
   lastUpdated: {
     type: Date,
