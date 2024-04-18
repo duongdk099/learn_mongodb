@@ -2,7 +2,7 @@ const Account = require("../models/account");
 const User = require("../models/user");
 exports.getAccounts = async (req, res) => {
   try {
-    const accounts = await Account.find({});
+    const accounts = await Account.find({ userId: req.auth.userId });
     res.status(200).json(accounts);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -10,14 +10,13 @@ exports.getAccounts = async (req, res) => {
 };
 
 exports.createAccount = async (req, res) => {
-  const { bankName, customName, lastUpdated, userId } = req.body;
+  const { bankName, customName } = req.body;
 
   try {
     const newAccount = new Account({
       bankName: bankName,
       customName: customName,
-      lastUpdated: lastUpdated,
-      userId: userId,
+      userId: req.auth.userId,
     });
     await newAccount.save();
     res.status(201).json(newAccount);
@@ -36,7 +35,6 @@ exports.updateAccount = async (req, res) => {
         $set: {
           bankName: bankName,
           customName: customName,
-          lastUpdated: Date.now(),
         },
       }
     );
@@ -53,8 +51,6 @@ exports.deleteAccount = async (req, res) => {
   const { id } = req.params;
   try {
     const deletedAccount = await Account.findOneAndDelete({ _id: id });
-    const idAccount = deletedAccount.userId;
-    await User.deleteOne({ _id: idAccount });
     if (!deletedAccount) {
       return res.status(404).json({ error: "Account not found" });
     }

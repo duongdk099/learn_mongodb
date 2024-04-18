@@ -21,6 +21,29 @@ const accountSchema = new mongoose.Schema({
   },
 });
 
+accountSchema.pre("save", async function (next) {
+  try {
+    this.lastUpdated = Date.now();
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
+accountSchema.pre("findOneAndUpdate", async function (next) {
+  this.set({ lastUpdated: Date.now() });
+  next();
+});
+
+accountSchema.pre("findOneAndDelete", async function (next) {
+  try {
+    await mongoose.model("Accountline").deleteMany({ accountId: this._id });
+    next();
+  } catch (error) {
+    next(error);
+  }
+})
+
 accountSchema.plugin(uniqueValidator);
 const Account = mongoose.model("Account", accountSchema);
 
