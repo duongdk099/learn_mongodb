@@ -1,4 +1,4 @@
-const { AccountLine } = require("../models/accountLine");
+const AccountLine = require("../models/accountLine");
 
 exports.getAccountsLine = async (req, res) => {
   res.send("Hello to get account line ");
