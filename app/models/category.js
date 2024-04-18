@@ -12,3 +12,5 @@ const categorySchema = new mongoose.Schema({
 categorySchema.plugin(uniqueValidator);
 
 const Category = mongoose.model("Category", categorySchema);
+
+module.exports = Category;

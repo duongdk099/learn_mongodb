@@ -51,3 +51,5 @@ const accountLineSchema = new mongoose.Schema({
 
 accountLineSchema.plugin(uniqueValidator);
 const AccountLine = mongoose.model("AccountLine", accountLineSchema);
+
+module.exports = AccountLine;
