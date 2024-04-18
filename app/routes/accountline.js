@@ -2,9 +2,9 @@ const express = require("express");
 const router = express.Router();
 const accountLineController = require("../controllers/accountline");
 
-router.get("/", accountLineController.getAccountsLine);
+router.get("/:id", accountLineController.getAccountsLine);
 
-router.post("/", accountLineController.createAccountLine);
+router.post("/:id", accountLineController.createAccountLine);
 
 router.patch("/:id", accountLineController.updateAccountLine);
 
