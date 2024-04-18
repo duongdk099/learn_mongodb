@@ -23,3 +23,5 @@ const accountSchema = new mongoose.Schema({
 
 accountSchema.plugin(uniqueValidator);
 const Account = mongoose.model("Account", accountSchema);
+
+module.exports = Account;
