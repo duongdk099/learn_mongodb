@@ -13,6 +13,7 @@ const accountSchema = new mongoose.Schema({
   lastUpdated: {
     type: Date,
     required: [true, "Please provide a last updated date"],
+    default: Date.now,
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -37,12 +38,12 @@ accountSchema.pre("findOneAndUpdate", async function (next) {
 
 accountSchema.pre("findOneAndDelete", async function (next) {
   try {
-    await mongoose.model("Accountline").deleteMany({ accountId: this._id });
+    await mongoose.model("Accountline").deleteMany({ accountId: this.getQuery()._id });
     next();
   } catch (error) {
     next(error);
   }
-})
+});
 
 accountSchema.plugin(uniqueValidator);
 const Account = mongoose.model("Account", accountSchema);

@@ -49,6 +49,44 @@ const accountLineSchema = new mongoose.Schema({
   },
 });
 
+accountLineSchema.pre("save", async function (next) {
+  try {
+    // Update the lastUpdated field
+    this.lastUpdated = Date.now();
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
+accountLineSchema.pre("findOneAndUpdate", async function (next) {
+  this.set({ lastUpdated: Date.now() });
+  next();
+});
+
+accountLineSchema.pre(
+  "findOneAndDelete",
+  { document: true },
+  async function (next) {
+    try {
+      // Example: Delete associated data from another collection
+      await OtherModel.deleteMany({ accountLineId: this._id });
+      next();
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+accountLineSchema.post("findOneAndDelete", async function (doc) {
+  try {
+    // Example: Log deletion
+    console.log(`AccountLine with ID ${doc._id} deleted successfully.`);
+  } catch (error) {
+    console.error("Error logging account line deletion:", error);
+  }
+});
+
 accountLineSchema.plugin(uniqueValidator);
 const AccountLine = mongoose.model("AccountLine", accountLineSchema);
 
